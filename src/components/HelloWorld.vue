@@ -1,11 +1,3 @@
-<!--
- * @Author: zouyaoji@https://github.com/zouyaoji
- * @Date: 2021-12-29 13:45:20
- * @LastEditTime: 2022-04-12 21:38:31
- * @LastEditors: zouyaoji
- * @Description:
- * @FilePath: \vue-cesium-vite-starter\src\components\HelloWorld.vue
--->
 <template>
   <div class="home viewer">
     <vc-viewer ref="viewerRef" @ready="onViewerReady">
@@ -27,7 +19,7 @@
       <vc-layer-imagery>
         <vc-imagery-provider-osm />
       </vc-layer-imagery>
-      <vc-navigation />
+      <vc-navigation style="position: absolute; top: 100px" />
       <vc-measurements :offset="[0, 40]" :on-fab-updated="onFabUpdated" />
       <vc-drawings
         position="bottom-right"
@@ -38,66 +30,68 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  VcDrawingsProps,
-  VcGraphicsBillboardProps,
-  VcGraphicsLabelProps,
-  VcGraphicsPointProps,
-  VcViewerRef,
-} from 'vue-cesium'
-import { VcPickEvent, VcReadyObject } from 'vue-cesium/es/utils/types'
+<script setup>
+import { ref } from "vue";
+
 defineProps({
   msg: {
     type: String,
     required: true,
   },
-})
-const viewerRef = ref<VcViewerRef>(null)
+});
+const viewerRef = ref(null);
+
 // for debug only
 // window.viewerRef = viewerRef
 
-const mainFabOpts: VcDrawingsProps['mainFabOpts'] = {
-  direction: 'left',
-}
-const point: VcGraphicsPointProps = {
+// VcDrawingsProps
+const mainFabOpts = {
+  direction: "left",
+};
+// VcGraphicsPointProps;
+const point = {
   pixelSize: 28,
-  color: 'red',
-}
-const label: VcGraphicsLabelProps = {
-  text: 'Hello VueCesium',
+  color: "red",
+};
+// : VcGraphicsLabelProps
+const label = {
+  text: "Hello VueCesium",
   pixelOffset: [0, 80],
-  fillColor: 'red',
-}
-const billboard = ref<VcGraphicsBillboardProps>({
-  image: 'https://zouyaoji.top/vue-cesium/favicon.png',
+  fillColor: "red",
+};
+// VcGraphicsBillboardProps
+const billboard = ref({
+  image: "https://zouyaoji.top/vue-cesium/favicon.png",
   scale: 0.5,
-})
-const onViewerReady = (readyObj: VcReadyObject) => {
-  console.log(readyObj.viewer)
-}
-const onEntityEvt = (e: VcPickEvent) => {
-  console.log(e)
-  if (e.type === 'onmouseover') {
+});
+
+//: VcReadyObject
+const onViewerReady = (readyObj) => {
+  console.log(readyObj.viewer);
+};
+
+// : VcPickEvent
+const onEntityEvt = (e) => {
+  console.log(e);
+  if (e.type === "onmouseover") {
     billboard.value = {
-      image: 'https://zouyaoji.top/vue-cesium/favicon.png',
+      image: "https://zouyaoji.top/vue-cesium/favicon.png",
       scale: 0.6,
-    }
-  } else if (e.type === 'onmouseout') {
+    };
+  } else if (e.type === "onmouseout") {
     billboard.value = {
-      image: 'https://zouyaoji.top/vue-cesium/favicon.png',
+      image: "https://zouyaoji.top/vue-cesium/favicon.png",
       scale: 0.5,
-    }
+    };
   }
-}
-// 在下个版本修复此props错误
+};
+
 const onFabUpdated = () => {
   //
-}
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 a {
   color: #42b983;
 }
