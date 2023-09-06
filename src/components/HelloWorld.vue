@@ -19,7 +19,7 @@
       <vc-layer-imagery>
         <vc-imagery-provider-osm />
       </vc-layer-imagery>
-      <vc-navigation style="position: absolute; top: 100px" />
+      <vc-navigation :position="position" :offset="offset" />
       <vc-measurements :offset="[0, 40]" :on-fab-updated="onFabUpdated" />
       <vc-drawings
         position="bottom-right"
@@ -31,20 +31,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-
-defineProps({
+const props = defineProps({
   msg: {
     type: String,
     required: true,
   },
 });
+onMounted(() => {
+  console.log(props.msg);
+});
 const viewerRef = ref(null);
+const position = ref("top-right");
+const offset = ref([10, 20]); // right top
 
-// for debug only
-// window.viewerRef = viewerRef
-
-// VcDrawingsProps
 const mainFabOpts = {
   direction: "left",
 };
@@ -54,7 +53,14 @@ const point = {
   color: "red",
 };
 // : VcGraphicsLabelProps
-const label = {
+const label = computed(() => {
+  return {
+    text: props.msg,
+    pixelOffset: [0, 80],
+    fillColor: "red",
+  };
+});
+const label1 = {
   text: "Hello VueCesium",
   pixelOffset: [0, 80],
   fillColor: "red",
